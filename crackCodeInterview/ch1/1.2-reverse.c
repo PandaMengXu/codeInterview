@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 void reverse(char* str)
 {
     char* end = str;
@@ -12,12 +13,13 @@ void reverse(char* str)
         ++end;
     j = end;
     *end = *str;
+    --j;
     while(j > i)
     {
         *i = *j;
         ++i;
         *j = *i;
-        ++j;
+        --j;
     }
     while(i < end)
     {
@@ -33,12 +35,12 @@ void main(int argc, char* argv[])
     char* str_test2;
     str_test1 = (char*) malloc(10);
     str_test2 = (char*) malloc(2);
-    str_test1 = "abcdefjhi";
-    str_test2 = "a";
-    printf("input str1=%s, str2=%s", str_test1, str_test2);
+    strcpy(str_test1, "abcdefjhi");
+    strcpy(str_test2,"a");
+    printf("input str1=%s, str2=%s\n", str_test1, str_test2);
     reverse(str_test1);
     reverse(str_test2);
-    printf("output str=%s, str2=%s", str_test1, str_test2);
+    printf("output str=%s, str2=%s\n", str_test1, str_test2);
     free(str_test1);
     free(str_test2);
 }
