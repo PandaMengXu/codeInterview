@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/memory-map.dir/main.cpp.o  -o memory-map -rdynamic -lboost_iostreams-mt 

@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pennpanda/github/codeInterview/fun/boost-file-map/main.cpp
+boost/iostreams/device/mapped_file.hpp
+-
+iostream
+-
+
