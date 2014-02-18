@@ -11,4 +11,8 @@ boost/iostreams/device/mapped_file.hpp
 -
 iostream
 -
+sstream
+-
+string
+-
 
