@@ -10,6 +10,22 @@ using namespace std;
 #define true 1
 #define false 0
 
+#define RING_SIZE   100
+
+int ring_buff(int data_size)
+{
+    int i = 0;
+
+    for(i = 0; i < data_size; i++)
+    {
+           
+    }
+
+    return 0;
+}
+
+
+
 int main()
 {
     int i = 0;
@@ -41,7 +57,8 @@ int main()
             aio_param.aio_fildes = fd_out;
             aio_param.aio_offset = fd_offset;
             while( aio_error(&aio_param) != 0 && is_first_write == false ) {cout << "wait for the previous one finish" <<endl;}
-            aio_param.aio_buf = memcpy(buffer_out, buffer, buffer_size); //the buffer_out has to be written before it's copied to again!
+           // aio_param.aio_buf = memcpy(buffer_out, buffer, buffer_size); //the buffer_out has to be written before it's copied to again!
+            aio_param.aio_buf = buffer;
             aio_param.aio_nbytes = offset;
             //aio_offset = ? should be the end of file for O_APPEND mode
             aio_param.aio_sigevent.sigev_notify = SIGEV_NONE;
