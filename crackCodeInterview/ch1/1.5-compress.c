@@ -1,57 +1,70 @@
-//compress if the compressed string is smaller
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-bool compress(char* str, char** cmp_str)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+/* compress(3)
+ * Input:
+ *  org: pointer of input string
+ *  org_length: length of input string
+ *  cmps: pointer of compressed string if it needs compression
+ * Output:
+ *  1: String is compressed
+ *  0: String donot need compressed
+ * */
+int compress(char* org, int org_length, char* cmps)
 {
-    int i = 0;
-    int j = 0;
-    int length = 0;
-    int rep_num = 0;
-    while(str[i++] != '\0');
-    length = i - 1;
-    if(length == 0)
-        return str;
+    int i = 0, j = 0, count = 0, digit = 0;
+    char prev = '\0';
 
-    *cmp_str = (char*) calloc(length,sizeof(int));
-    i = 0;
-    j = 0;
-    while(str[i] != '\0')
+    prev = cmps[0] = org[0];
+    count++;
+    /* be careful about the \0 at the end; strlen() not count the \0 */
+    /* Use the last \0 to record the last char */
+    for( i=1; i < org_length+1; i++ )
     {
-        if(str[i] == str[(i-1)])
+        if(org[i] == prev)
         {
-            ++rep_num;
+            count++;
         }else{
-            if(rep_num == 0)
-                (*cmp_str)[j] = str[i];
-            else
-                (*cmp_str)[j] = '0' + ++rep_num;
-            if(++j >= length)
+            do{
+                digit = count % 10;
+                cmps[++j] = (char)(digit + (int)'0');
+                count = count / 10;
+            }while(digit != 0);
+            cmps[++j] = prev = org[i];
+            if( (j+1) >= org_length)
             {
-                free(*cmp_str);
-                return false;
+                printf("No need to compress\n");
+                return 0;
             }
-            rep_num = 0;
         }
-        ++i;
     }
-    return true;
+    cmps[++j] = '\0';
+    return 1; /* compressed */
 }
 
-
-void main()
+int main(int argc, char* argv[])
 {
-    char str1[] = "aabccccaaa";
-    char str2[] = "abcd";
-    char str3[] = "";
-    char* cmp_str[3] = {NULL};
-    bool isCompressed[3] = {false};
-    bool i = 0;
-    printf("str1 = %s\nstr2 = %s\nstr3 = %s\n",str1, str2, str3);
-    isCompressed[0] = compress(str1, &cmp_str[0]);
-    isCompressed[1] = compress(str2, &cmp_str[1]);
-    isCompressed[2] = compress(str3, &cmp_str[2]);
-    printf("compressed: str1 = %s\nstr2 = %s\nstr3 = %s\n", cmp_str[0], cmp_str[1], cmp_str[2]);
-    while(i++<3)
-        if(isCompressed[i]) free(cmp_str[i]);
+    int org_length = 0;
+    char* cmps = NULL;
+    int ret = 0;
+    if(argc <= 1)
+    {
+        printf("Usage: ./program input_string\n");
+        return 0;
+    }
+    
+    org_length = strlen(argv[1]);
+    printf("input %s length: %d\n", argv[1], org_length);
+    cmps = (char*) malloc(org_length);
+    
+    ret = compress(argv[1], org_length, cmps);
+
+    if(ret == 1)
+    {
+        printf("String \"%s\" is compressed as \"%s\"\n", argv[1], cmps);
+    }else{
+        printf("String \"%s\" is NOT compressed\n", argv[1]);
+    } 
+    free(cmps); /* each malloc corresponds to a free */
+    return 0;
 }
